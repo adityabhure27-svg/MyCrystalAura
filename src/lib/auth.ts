@@ -1,50 +1,34 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import type { User } from "@supabase/supabase-js";
-import type { UserRole } from "@/lib/database.types";
+import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 
-/** Current auth user, or null. */
-export async function getUser(): Promise<User | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user;
+/**
+ * Auth helpers backed by Clerk. Two roles only: customer (default) and admin.
+ * Admin is granted via the Clerk user's `publicMetadata.role = "admin"`.
+ */
+
+export async function getUserId(): Promise<string | null> {
+  const { userId } = await auth();
+  return userId;
 }
 
-/** Current user's role (defaults to 'customer' when unknown). */
-export async function getUserRole(): Promise<UserRole | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-  const { data } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-  return (data?.role as UserRole) ?? "customer";
+export async function getRole(): Promise<"admin" | "customer" | null> {
+  const { userId } = await auth();
+  if (!userId) return null;
+  const user = await currentUser();
+  return user?.publicMetadata?.role === "admin" ? "admin" : "customer";
 }
 
 /**
- * Gate for the Owner Portal. Redirects to /login if not signed in, or to
- * /login?error=not_owner if the user lacks the owner role. Returns the user
- * when access is granted.
+ * Gate for the Owner/Admin portal. Redirects to sign-in if signed out, or home
+ * if the signed-in user is not an admin. Returns the admin user id on success.
  */
-export async function requireOwner(): Promise<User> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login?next=/owner");
+export async function requireOwner(): Promise<string> {
+  const { userId } = await auth();
+  if (!userId) redirect("/sign-in?redirect_url=/owner");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
+  if (user.publicMetadata?.role !== "admin") redirect("/?denied=admin");
 
-  if (profile?.role !== "owner") redirect("/login?error=not_owner");
-  return user;
+  return userId;
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 import { Logo } from "@/components/logo";
 import { PILLARS } from "@/lib/content";
 
@@ -8,7 +9,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Logo />
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {PILLARS.map((p) => (
             <Link
               key={p.slug}
@@ -18,9 +19,15 @@ export function SiteHeader() {
               {p.title}
             </Link>
           ))}
+          <Link
+            href="/about"
+            className="font-body text-sm font-medium text-navy/80 transition-colors hover:text-gold-deep"
+          >
+            About
+          </Link>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href="/search"
             aria-label="Search"
@@ -31,12 +38,29 @@ export function SiteHeader() {
               <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </Link>
-          <Link
-            href="/shop"
-            className="rounded-brand bg-navy px-4 py-2 font-body text-sm font-medium text-ivory transition-colors hover:bg-navy-700"
-          >
-            Explore Shop
-          </Link>
+
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button
+                type="button"
+                className="font-body text-sm font-medium text-navy/80 transition-colors hover:text-gold-deep"
+              >
+                Sign in
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button
+                type="button"
+                className="rounded-brand bg-navy px-4 py-2 font-body text-sm font-medium text-ivory transition-colors hover:bg-navy-700"
+              >
+                Sign up
+              </button>
+            </SignUpButton>
+          </Show>
+
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
         </div>
       </div>
     </header>

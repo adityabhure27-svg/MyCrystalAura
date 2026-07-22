@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { SignOutButton } from "@clerk/nextjs";
 import { requireOwner } from "@/lib/auth";
-import { signOut } from "@/app/login/actions";
 
 const NAV = [
   { href: "/owner", label: "Dashboard" },
@@ -33,14 +33,16 @@ export default async function OwnerLayout({
             </Link>
           ))}
         </nav>
-        <form action={signOut} className="mt-6">
-          <button
-            type="submit"
-            className="rounded-lg px-3 py-2 font-body text-sm text-slate hover:text-navy"
-          >
-            Sign out
-          </button>
-        </form>
+        <div className="mt-6">
+          <SignOutButton>
+            <button
+              type="button"
+              className="rounded-lg px-3 py-2 font-body text-sm text-slate hover:text-navy"
+            >
+              Sign out
+            </button>
+          </SignOutButton>
+        </div>
       </aside>
 
       <div className="min-w-0 flex-1">{children}</div>
