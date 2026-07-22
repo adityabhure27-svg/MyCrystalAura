@@ -29,6 +29,7 @@ function parse(formData: FormData) {
     description: String(formData.get("description") ?? "").trim() || null,
     category_id: String(formData.get("category_id") ?? "") || null,
     subcategory_id: String(formData.get("subcategory_id") ?? "") || null,
+    crystal_profile_id: String(formData.get("crystal_profile_id") ?? "") || null,
     price: num(formData.get("price")),
     sale_price: saleRaw ? num(formData.get("sale_price")) : null,
     stock_quantity: num(formData.get("stock_quantity")),

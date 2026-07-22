@@ -1,5 +1,10 @@
 import { saveProduct } from "@/app/admin/(dashboard)/products/actions";
-import type { Category, Product, Subcategory } from "@/lib/database.types";
+import type {
+  Category,
+  CrystalProfile,
+  Product,
+  Subcategory,
+} from "@/lib/database.types";
 
 const inputClass =
   "mt-1.5 w-full rounded-brand border border-gold/25 bg-white/70 px-3 py-2 font-body text-sm text-navy outline-none focus:border-gold";
@@ -8,10 +13,12 @@ export function ProductForm({
   product,
   categories,
   subcategories,
+  crystalProfiles,
 }: {
   product?: Product | null;
   categories: Category[];
   subcategories: Subcategory[];
+  crystalProfiles: CrystalProfile[];
 }) {
   return (
     <form action={saveProduct} className="max-w-2xl">
@@ -90,6 +97,23 @@ export function ProductForm({
             </select>
           </label>
         </div>
+
+        <label className="font-body text-sm text-navy">
+          Crystal profile{" "}
+          <span className="text-slate">
+            (links this product to /learn)
+          </span>
+          <select
+            name="crystal_profile_id"
+            defaultValue={product?.crystal_profile_id ?? ""}
+            className={inputClass}
+          >
+            <option value="">— None —</option>
+            {crystalProfiles.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </select>
+        </label>
 
         <div className="grid grid-cols-2 items-end gap-4">
           <label className="font-body text-sm text-navy">

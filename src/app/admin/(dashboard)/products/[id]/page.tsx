@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductForm } from "@/components/product-form";
-import { getProductById, listCategories, listSubcategories } from "@/lib/owner";
+import {
+  getProductById,
+  listCategories,
+  listSubcategories,
+  listCrystalProfiles,
+} from "@/lib/owner";
 import { deleteProduct } from "../actions";
 import { uploadProductImage, deleteProductImage } from "./image-actions";
 
@@ -12,11 +17,13 @@ export default async function EditProductPage(
   const sp = await props.searchParams;
   const error = typeof sp.error === "string" ? sp.error : null;
 
-  const [product, categories, subcategories] = await Promise.all([
-    getProductById(id),
-    listCategories(),
-    listSubcategories(),
-  ]);
+  const [product, categories, subcategories, crystalProfiles] =
+    await Promise.all([
+      getProductById(id),
+      listCategories(),
+      listSubcategories(),
+      listCrystalProfiles(),
+    ]);
   if (!product) notFound();
 
   return (
@@ -50,6 +57,7 @@ export default async function EditProductPage(
           product={product}
           categories={categories}
           subcategories={subcategories}
+          crystalProfiles={crystalProfiles}
         />
       </div>
 

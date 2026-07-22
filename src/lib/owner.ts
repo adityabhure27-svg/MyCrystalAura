@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import type {
   Category,
+  CrystalProfile,
   CustomerMetrics,
   Order,
   Product,
@@ -80,6 +81,29 @@ export async function listCategories(): Promise<Category[]> {
     .order("display_order", { ascending: true });
   if (error) return [];
   return data ?? [];
+}
+
+export async function listCrystalProfiles(): Promise<CrystalProfile[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("crystal_profiles")
+    .select("*")
+    .order("name", { ascending: true });
+  if (error) return [];
+  return data ?? [];
+}
+
+export async function getCrystalProfileById(
+  id: string,
+): Promise<CrystalProfile | null> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("crystal_profiles")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) return null;
+  return (data as CrystalProfile | null) ?? null;
 }
 
 export async function listSubcategories(): Promise<Subcategory[]> {
