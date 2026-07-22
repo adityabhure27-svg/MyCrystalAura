@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 
 const NAV = [
   { href: "/shop", label: "Shop" },
@@ -14,6 +14,7 @@ const NAV = [
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   return (
     <div className="md:hidden">
@@ -65,20 +66,21 @@ export function MobileNav() {
             </nav>
 
             <div className="mt-2 border-t border-gold/15 p-3">
-              <Show when="signed-in">
-                <Link
-                  href="/account/orders"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-3 font-body text-base text-navy hover:bg-ivory-deep"
-                >
-                  My Orders
-                </Link>
-                <div className="flex items-center gap-3 px-3 py-3">
-                  <UserButton />
-                  <span className="font-body text-sm text-slate">Account</span>
-                </div>
-              </Show>
-              <Show when="signed-out">
+              {isSignedIn ? (
+                <>
+                  <Link
+                    href="/account/orders"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-3 py-3 font-body text-base text-navy hover:bg-ivory-deep"
+                  >
+                    My Orders
+                  </Link>
+                  <div className="flex items-center gap-3 px-3 py-3">
+                    <UserButton />
+                    <span className="font-body text-sm text-slate">Account</span>
+                  </div>
+                </>
+              ) : (
                 <div className="flex flex-col gap-2 px-1">
                   <SignInButton mode="modal">
                     <button className="w-full rounded-brand border border-navy/20 px-4 py-2.5 font-body text-sm font-medium text-navy">
@@ -91,7 +93,7 @@ export function MobileNav() {
                     </button>
                   </SignUpButton>
                 </div>
-              </Show>
+              )}
             </div>
           </div>
         </div>

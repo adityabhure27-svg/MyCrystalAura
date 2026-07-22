@@ -152,9 +152,14 @@ export default async function Home() {
           </Link>
         </div>
         {featured.length > 0 ? (
-          <div className="mt-8 grid grid-cols-2 gap-5 lg:grid-cols-4">
+          <div className="mt-8 flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] md:grid md:grid-cols-4 md:gap-5 md:overflow-visible md:pb-0">
             {featured.map((p) => (
-              <FeaturedProductCard key={p.id} product={p} />
+              <div
+                key={p.id}
+                className="w-[68%] shrink-0 snap-start sm:w-[42%] md:w-auto"
+              >
+                <FeaturedProductCard product={p} />
+              </div>
             ))}
           </div>
         ) : (
@@ -166,9 +171,9 @@ export default async function Home() {
 
       {/* Value strip */}
       <section className="bg-navy">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-5 py-10 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mx-auto flex max-w-6xl gap-6 overflow-x-auto px-5 py-10 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:overflow-visible lg:grid-cols-5">
           {VALUES.map((v) => (
-            <div key={v.t} className="text-center">
+            <div key={v.t} className="w-32 shrink-0 text-center sm:w-auto">
               <p className="font-heading text-sm uppercase tracking-wide text-gold">
                 {v.t}
               </p>

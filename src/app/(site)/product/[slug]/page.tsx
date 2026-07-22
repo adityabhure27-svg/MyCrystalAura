@@ -114,6 +114,15 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
             </p>
           )}
 
+          {product.crystal_profiles && (
+            <Link
+              href={`/learn/crystal/${product.crystal_profiles.slug}`}
+              className="mt-4 inline-block font-body text-sm font-medium text-gold-deep hover:underline"
+            >
+              Learn about {product.crystal_profiles.name} →
+            </Link>
+          )}
+
           <AddToBag
             disabled={!inStock}
             product={{

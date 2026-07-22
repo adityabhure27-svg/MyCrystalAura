@@ -1,46 +1,66 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { FooterAccordion } from "@/components/footer-accordion";
 import { PILLARS } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 bg-navy text-ivory/70">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
-          <Logo tone="light" />
-          <p className="mt-4 max-w-xs font-body text-sm leading-relaxed text-ivory/60">
-            India&apos;s premium holistic wellness marketplace — authentic
-            crystals, trusted knowledge, and conscious living.
-          </p>
-          <p className="mt-6 eyebrow text-gold-soft">
-            Energy · Balance · Transformation
-          </p>
-        </div>
+    <footer className="mt-16 bg-navy text-ivory/70">
+      <div className="mx-auto max-w-6xl px-5 py-12">
+        <div className="md:flex md:gap-12">
+          <div className="md:max-w-xs">
+            <Logo tone="light" />
+            <p className="mt-4 font-body text-sm leading-relaxed text-ivory/60">
+              India&apos;s premium holistic wellness marketplace — authentic
+              crystals, trusted knowledge, and conscious living.
+            </p>
+            <p className="eyebrow mt-5 text-gold-soft">
+              Energy · Balance · Transformation
+            </p>
+          </div>
 
-        <div>
-          <h4 className="font-heading text-sm text-ivory">Explore</h4>
-          <ul className="mt-4 space-y-2.5 font-body text-sm">
-            {PILLARS.map((p) => (
-              <li key={p.slug}>
-                <Link
-                  href={`/${p.slug}`}
-                  className="transition-colors hover:text-gold-soft"
-                >
-                  {p.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div className="mt-8 flex-1 md:mt-0 md:grid md:grid-cols-3 md:gap-8">
+            <FooterAccordion title="Explore">
+              <ul className="space-y-2.5 font-body text-sm">
+                {PILLARS.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={`/${p.slug}`} className="hover:text-gold-soft">
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link href="/about" className="hover:text-gold-soft">
+                    About
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
 
-        <div>
-          <h4 className="font-heading text-sm text-ivory">Brand Promise</h4>
-          <ul className="mt-4 space-y-2.5 font-body text-sm">
-            <li>Authentic Products</li>
-            <li>Trusted Knowledge</li>
-            <li>Conscious Living</li>
-            <li>Holistic Transformation</li>
-          </ul>
+            <FooterAccordion title="Learn">
+              <ul className="space-y-2.5 font-body text-sm">
+                <li>
+                  <Link href="/learn" className="hover:text-gold-soft">
+                    The Crystal Universe
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/learn/crystals" className="hover:text-gold-soft">
+                    Crystal Encyclopedia
+                  </Link>
+                </li>
+              </ul>
+            </FooterAccordion>
+
+            <FooterAccordion title="Brand Promise">
+              <ul className="space-y-2.5 font-body text-sm">
+                <li>Authentic Products</li>
+                <li>Trusted Knowledge</li>
+                <li>Conscious Living</li>
+                <li>Holistic Transformation</li>
+              </ul>
+            </FooterAccordion>
+          </div>
         </div>
       </div>
 

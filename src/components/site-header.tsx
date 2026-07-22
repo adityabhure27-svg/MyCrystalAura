@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 import { Logo } from "@/components/logo";
 import { BagBadge } from "@/components/bag-badge";
 import { MobileNav } from "@/components/mobile-nav";
+import { HeaderAuth } from "@/components/header-auth";
 import { PILLARS } from "@/lib/content";
 
 export function SiteHeader() {
@@ -45,33 +45,7 @@ export function SiteHeader() {
           </Link>
 
           <BagBadge />
-
-          {/* Auth: buttons on desktop, avatar everywhere; sign-in lives in the
-              mobile drawer to keep the header compact. */}
-          <div className="hidden items-center gap-3 md:flex">
-            <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  className="font-body text-sm font-medium text-navy/80 transition-colors hover:text-gold-deep"
-                >
-                  Sign in
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button
-                  type="button"
-                  className="rounded-brand bg-navy px-4 py-2 font-body text-sm font-medium text-ivory transition-colors hover:bg-navy-700"
-                >
-                  Sign up
-                </button>
-              </SignUpButton>
-            </Show>
-          </div>
-
-          <Show when="signed-in">
-            <UserButton />
-          </Show>
+          <HeaderAuth />
         </div>
       </div>
     </header>

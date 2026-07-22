@@ -108,12 +108,17 @@ export type CrystalProfile = {
   name: string;
   slug: string;
   overview: string | null;
+  scientific_information: string | null;
+  geological_formation: string | null;
+  origin: string | null;
+  colour_variations: string | null;
   chakra_association: string | null;
   zodiac_association: string | null;
   traditional_properties: string | null;
   care_instructions: string | null;
   cleansing_methods: string | null;
   charging_methods: string | null;
+  buying_guide: string | null;
   main_image_url: string | null;
   status: ContentStatus;
 };

@@ -65,18 +65,22 @@ export async function getProductsByCategory(
   return (data as ProductWithImages[] | null) ?? [];
 }
 
+export type ProductDetail = ProductWithImages & {
+  crystal_profiles: { id: string; name: string; slug: string } | null;
+};
+
 export async function getProductBySlug(
   slug: string,
-): Promise<ProductWithImages | null> {
+): Promise<ProductDetail | null> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
-    .select("*, product_images(*)")
+    .select("*, product_images(*), crystal_profiles(id,name,slug)")
     .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
   if (error) return null;
-  return (data as ProductWithImages | null) ?? null;
+  return (data as ProductDetail | null) ?? null;
 }
 
 export async function searchProducts(term: string): Promise<Product[]> {
@@ -91,6 +95,47 @@ export async function searchProducts(term: string): Promise<Product[]> {
     .limit(50);
   if (error) return [];
   return data ?? [];
+}
+
+export async function getPublishedCrystalProfiles(): Promise<
+  import("@/lib/database.types").CrystalProfile[]
+> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("crystal_profiles")
+    .select("*")
+    .eq("status", "published")
+    .order("name", { ascending: true });
+  if (error) return [];
+  return data ?? [];
+}
+
+export async function getCrystalProfileBySlug(
+  slug: string,
+): Promise<import("@/lib/database.types").CrystalProfile | null> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("crystal_profiles")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
+  if (error) return null;
+  return (data as import("@/lib/database.types").CrystalProfile | null) ?? null;
+}
+
+export async function getProductsByCrystalProfile(
+  profileId: string,
+): Promise<ProductWithImages[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*, product_images(*)")
+    .eq("status", "published")
+    .eq("crystal_profile_id", profileId)
+    .order("created_at", { ascending: false });
+  if (error) return [];
+  return (data as ProductWithImages[] | null) ?? [];
 }
 
 /** Format a numeric amount as INR (or the given currency). */
