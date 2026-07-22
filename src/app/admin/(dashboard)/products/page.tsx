@@ -11,7 +11,7 @@ export default async function OwnerProductsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl text-navy">Products</h1>
         <Link
-          href="/owner/products/new"
+          href="/admin/products/new"
           className="rounded-brand bg-navy px-4 py-2 font-body text-sm font-medium text-ivory hover:bg-navy-700"
         >
           + Add product
@@ -42,7 +42,7 @@ export default async function OwnerProductsPage() {
                 <tr key={p.id} className="border-t border-gold/15">
                   <td className="px-4 py-3">
                     <Link
-                      href={`/owner/products/${p.id}`}
+                      href={`/admin/products/${p.id}`}
                       className="font-medium hover:text-gold-deep"
                     >
                       {p.name}

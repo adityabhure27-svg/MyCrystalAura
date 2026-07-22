@@ -1,9 +1,7 @@
-import {ClerkProvider} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Cinzel, Poppins } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -38,12 +36,9 @@ export default function RootLayout({
       lang="en"
       className={`${cinzel.variable} ${poppins.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ClerkProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </ClerkProvider>
+      <body className="min-h-full bg-background text-foreground">
+        {/* Public (site) and admin route groups provide their own chrome. */}
+        <ClerkProvider>{children}</ClerkProvider>
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ export async function saveProduct(formData: FormData) {
 
   if (!fields.name) {
     redirect(
-      `/owner/products/${id || "new"}?error=${encodeURIComponent("Name is required")}`,
+      `/admin/products/${id || "new"}?error=${encodeURIComponent("Name is required")}`,
     );
   }
 
@@ -49,7 +49,7 @@ export async function saveProduct(formData: FormData) {
       .update(fields)
       .eq("id", id);
     if (error) {
-      redirect(`/owner/products/${id}?error=${encodeURIComponent(error.message)}`);
+      redirect(`/admin/products/${id}?error=${encodeURIComponent(error.message)}`);
     }
   } else {
     const slug = slugify(fields.name) || crypto.randomUUID().slice(0, 8);
@@ -57,26 +57,26 @@ export async function saveProduct(formData: FormData) {
       .from("products")
       .insert({ ...fields, slug });
     if (error) {
-      redirect(`/owner/products/new?error=${encodeURIComponent(error.message)}`);
+      redirect(`/admin/products/new?error=${encodeURIComponent(error.message)}`);
     }
   }
 
-  revalidatePath("/owner/products");
+  revalidatePath("/admin/products");
   revalidatePath("/shop");
-  redirect("/owner/products");
+  redirect("/admin/products");
 }
 
 export async function deleteProduct(formData: FormData) {
   await requireOwner();
   const id = String(formData.get("id") ?? "");
-  if (!id) redirect("/owner/products");
+  if (!id) redirect("/admin/products");
 
   const supabase = await createClient();
   await supabase.from("products").delete().eq("id", id);
 
-  revalidatePath("/owner/products");
+  revalidatePath("/admin/products");
   revalidatePath("/shop");
-  redirect("/owner/products");
+  redirect("/admin/products");
 }
 
 /** Toggle publish state from the list view. */
@@ -84,11 +84,11 @@ export async function setPublished(formData: FormData) {
   await requireOwner();
   const id = String(formData.get("id") ?? "");
   const next = formData.get("publish") === "true";
-  if (!id) redirect("/owner/products");
+  if (!id) redirect("/admin/products");
 
   const supabase = await createClient();
   await supabase.from("products").update({ is_published: next }).eq("id", id);
 
-  revalidatePath("/owner/products");
+  revalidatePath("/admin/products");
   revalidatePath("/shop");
 }

@@ -24,7 +24,7 @@ export async function getRole(): Promise<"admin" | "customer" | null> {
  */
 export async function requireOwner(): Promise<string> {
   const { userId } = await auth();
-  if (!userId) redirect("/sign-in?redirect_url=/owner");
+  if (!userId) redirect("/admin/sign-in");
 
   const client = await clerkClient();
   const user = await client.users.getUser(userId);

@@ -6,10 +6,10 @@ export default async function OwnerDashboard() {
   const stats = await getDashboardStats();
 
   const cards = [
-    { label: "Products", value: String(stats.products), href: "/owner/products" },
-    { label: "Orders", value: String(stats.orders), href: "/owner/orders" },
-    { label: "Customers", value: String(stats.customers), href: "/owner/customers" },
-    { label: "Revenue", value: formatPrice(stats.revenue), href: "/owner/analytics" },
+    { label: "Products", value: String(stats.products), href: "/admin/products" },
+    { label: "Orders", value: String(stats.orders), href: "/admin/orders" },
+    { label: "Customers", value: String(stats.customers), href: "/admin/customers" },
+    { label: "Revenue", value: formatPrice(stats.revenue), href: "/admin/analytics" },
   ];
 
   return (
@@ -38,13 +38,13 @@ export default async function OwnerDashboard() {
         <h2 className="font-heading text-lg text-navy">Quick actions</h2>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
-            href="/owner/products/new"
+            href="/admin/products/new"
             className="rounded-brand bg-navy px-4 py-2 font-body text-sm font-medium text-ivory hover:bg-navy-700"
           >
             + Add product
           </Link>
           <Link
-            href="/owner/orders"
+            href="/admin/orders"
             className="rounded-brand border border-navy/20 px-4 py-2 font-body text-sm font-medium text-navy hover:border-gold"
           >
             View orders

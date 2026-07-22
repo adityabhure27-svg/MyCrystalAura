@@ -3,7 +3,7 @@ import { ProductForm } from "@/components/product-form";
 import { listCategories } from "@/lib/owner";
 
 export default async function NewProductPage(
-  props: PageProps<"/owner/products/new">,
+  props: PageProps<"/admin/products/new">,
 ) {
   const sp = await props.searchParams;
   const error = typeof sp.error === "string" ? sp.error : null;
@@ -12,7 +12,7 @@ export default async function NewProductPage(
   return (
     <div>
       <Link
-        href="/owner/products"
+        href="/admin/products"
         className="font-body text-sm text-gold-deep hover:underline"
       >
         ← Products

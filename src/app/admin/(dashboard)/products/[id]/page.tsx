@@ -5,7 +5,7 @@ import { getProductById, listCategories } from "@/lib/owner";
 import { deleteProduct } from "../actions";
 
 export default async function EditProductPage(
-  props: PageProps<"/owner/products/[id]">,
+  props: PageProps<"/admin/products/[id]">,
 ) {
   const { id } = await props.params;
   const sp = await props.searchParams;
@@ -20,7 +20,7 @@ export default async function EditProductPage(
   return (
     <div>
       <Link
-        href="/owner/products"
+        href="/admin/products"
         className="font-body text-sm text-gold-deep hover:underline"
       >
         ← Products

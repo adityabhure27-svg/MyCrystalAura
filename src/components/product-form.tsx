@@ -1,4 +1,4 @@
-import { saveProduct } from "@/app/owner/products/actions";
+import { saveProduct } from "@/app/admin/(dashboard)/products/actions";
 import type { Category, Product } from "@/lib/database.types";
 
 const inputClass =
