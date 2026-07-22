@@ -44,9 +44,9 @@ export default async function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ivory">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-14 md:grid-cols-2 md:py-20">
-          <div>
-            <h1 className="text-5xl leading-[1.05] text-navy md:text-6xl">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-5 py-10 md:grid-cols-2 md:gap-10 md:py-20">
+          <div className="order-2 md:order-1">
+            <h1 className="text-4xl leading-[1.08] text-navy sm:text-5xl md:text-6xl">
               Nature&apos;s Energy.
               <br />
               <span className="italic text-gold">Your Transformation.</span>
@@ -55,16 +55,16 @@ export default async function Home() {
               Authentic crystals, conscious living and mindful experiences to
               heal, balance and elevate your aura.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/shop"
-                className="rounded-brand bg-navy px-7 py-3 font-body text-sm font-semibold uppercase tracking-wide text-ivory transition-transform hover:-translate-y-0.5"
+                className="w-full rounded-brand bg-navy px-7 py-3.5 text-center font-body text-sm font-semibold uppercase tracking-wide text-ivory transition-transform hover:-translate-y-0.5 sm:w-auto"
               >
                 Shop Crystals
               </Link>
               <Link
                 href="/learn"
-                className="rounded-brand border border-navy/25 px-7 py-3 font-body text-sm font-semibold uppercase tracking-wide text-navy transition-colors hover:border-gold hover:text-gold-deep"
+                className="w-full rounded-brand border border-navy/25 px-7 py-3.5 text-center font-body text-sm font-semibold uppercase tracking-wide text-navy transition-colors hover:border-gold hover:text-gold-deep sm:w-auto"
               >
                 Explore the Universe ✦
               </Link>
@@ -87,7 +87,7 @@ export default async function Home() {
           </div>
 
           {/* Hero visual (placeholder until product photography is uploaded) */}
-          <div className="relative">
+          <div className="relative order-1 md:order-2">
             <div
               className="aspect-[4/3] rounded-brand border border-gold/20"
               style={{
@@ -119,12 +119,12 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl px-5 text-center">
           <p className="eyebrow">Find what calls to you</p>
           <h2 className="mt-2 text-3xl text-navy">Shop by Intention</h2>
-          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-4 gap-x-4 gap-y-8">
+          <div className="mx-auto mt-10 flex max-w-3xl gap-4 overflow-x-auto pb-2 [scrollbar-width:none] md:grid md:grid-cols-4 md:gap-y-8 md:overflow-visible md:pb-0">
             {INTENTIONS.map((it) => (
               <Link
                 key={it.label}
                 href="/shop"
-                className="group flex flex-col items-center gap-2"
+                className="group flex w-20 shrink-0 flex-col items-center gap-2 md:w-auto"
               >
                 <span className="flex h-16 w-16 items-center justify-center rounded-full border border-gold/30 bg-white text-gold-deep transition-all group-hover:-translate-y-1 group-hover:border-gold">
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>

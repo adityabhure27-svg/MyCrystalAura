@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AnnouncementBar } from "@/components/announcement-bar";
+import { StickyBag } from "@/components/sticky-bag";
 import { CartProvider } from "@/lib/cart";
 
 /** Chrome for the public website (header + footer) + the shopping bag state. */
@@ -16,6 +17,7 @@ export default function SiteLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <StickyBag />
       </div>
     </CartProvider>
   );
