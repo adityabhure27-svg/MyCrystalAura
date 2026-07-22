@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/*
+  CrystalAura design system.
+  Palette + type from the Brand Anchor Document (v1.0).
+  Primary: Royal Gold #C8A146 · Secondary: Deep Navy #0B1F3A
+  Headings: Cinzel · Body: Poppins
+*/
+
+@theme {
+  /* Brand palette */
+  --color-gold: #c8a146;
+  --color-gold-soft: #ddc07e;
+  --color-gold-deep: #a6812f;
+  --color-navy: #0b1f3a;
+  --color-navy-700: #16304f;
+  --color-ivory: #f7f1e6;
+  --color-ivory-deep: #efe6d4;
+  --color-slate: #5b6472;
+  --color-emerald: #1f7a5c;
+  --color-white: #ffffff;
+
+  /* Semantic aliases */
+  --color-background: var(--color-ivory);
+  --color-foreground: var(--color-navy);
+  --color-muted: var(--color-slate);
+  --color-accent: var(--color-gold);
+
+  /* Type — wired to next/font CSS variables set in layout.tsx */
+  --font-heading: var(--font-cinzel), serif;
+  --font-body: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  /* Rhythm */
+  --radius-brand: 0.75rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Thin gold rule used as a section flourish */
+.rule-gold {
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+/* Small caps eyebrow label */
+.eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-gold-deep);
+}
