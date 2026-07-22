@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, formatPrice } from "@/lib/queries";
+import { AddToBag } from "@/components/add-to-bag";
 
 export async function generateMetadata(
   props: PageProps<"/product/[slug]">,
@@ -113,13 +114,16 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
             </p>
           )}
 
-          <button
-            type="button"
+          <AddToBag
             disabled={!inStock}
-            className="mt-8 w-full rounded-brand bg-navy px-6 py-3 font-body text-sm font-semibold text-ivory transition-colors hover:bg-navy-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:px-10"
-          >
-            Add to Cart
-          </button>
+            product={{
+              productId: product.id,
+              slug: product.slug,
+              name: product.name,
+              price: current,
+              image: hero?.image_url ?? null,
+            }}
+          />
         </div>
       </div>
     </section>

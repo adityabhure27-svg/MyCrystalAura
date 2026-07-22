@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 import { Logo } from "@/components/logo";
+import { BagBadge } from "@/components/bag-badge";
 import { PILLARS } from "@/lib/content";
 
 export function SiteHeader() {
@@ -38,6 +39,8 @@ export function SiteHeader() {
               <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
           </Link>
+
+          <BagBadge />
 
           <Show when="signed-out">
             <SignInButton mode="modal">
