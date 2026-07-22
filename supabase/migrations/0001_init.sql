@@ -73,7 +73,7 @@ create table if not exists public.customers (
   last_login_at timestamptz
 );
 create index if not exists customers_clerk_idx on public.customers(clerk_user_id);
-create trigger customers_updated before update on public.customers for each row execute function public.set_updated_at();
+create or replace trigger customers_updated before update on public.customers for each row execute function public.set_updated_at();
 
 -- ============================================================================
 -- 3. categories
@@ -94,8 +94,8 @@ create table if not exists public.categories (
   updated_at        timestamptz not null default now()
 );
 create index if not exists categories_status_idx on public.categories(status);
-create trigger categories_updated   before update on public.categories for each row execute function public.set_updated_at();
-create trigger categories_published before insert or update on public.categories for each row execute function public.set_published_at();
+create or replace trigger categories_updated   before update on public.categories for each row execute function public.set_updated_at();
+create or replace trigger categories_published before insert or update on public.categories for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 4. subcategories
@@ -115,8 +115,8 @@ create table if not exists public.subcategories (
   unique (category_id, slug)
 );
 create index if not exists subcategories_category_idx on public.subcategories(category_id);
-create trigger subcategories_updated   before update on public.subcategories for each row execute function public.set_updated_at();
-create trigger subcategories_published before insert or update on public.subcategories for each row execute function public.set_published_at();
+create or replace trigger subcategories_updated   before update on public.subcategories for each row execute function public.set_updated_at();
+create or replace trigger subcategories_published before insert or update on public.subcategories for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 5. collections  (+ 5b. collection_products)
@@ -133,8 +133,8 @@ create table if not exists public.collections (
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
-create trigger collections_updated   before update on public.collections for each row execute function public.set_updated_at();
-create trigger collections_published before insert or update on public.collections for each row execute function public.set_published_at();
+create or replace trigger collections_updated   before update on public.collections for each row execute function public.set_updated_at();
+create or replace trigger collections_published before insert or update on public.collections for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 8. crystal_profiles  (Crystal Encyclopedia)
@@ -161,8 +161,8 @@ create table if not exists public.crystal_profiles (
   created_at             timestamptz not null default now(),
   updated_at             timestamptz not null default now()
 );
-create trigger crystal_profiles_updated   before update on public.crystal_profiles for each row execute function public.set_updated_at();
-create trigger crystal_profiles_published before insert or update on public.crystal_profiles for each row execute function public.set_published_at();
+create or replace trigger crystal_profiles_updated   before update on public.crystal_profiles for each row execute function public.set_updated_at();
+create or replace trigger crystal_profiles_published before insert or update on public.crystal_profiles for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 1. products
@@ -197,8 +197,8 @@ create index if not exists products_subcategory_idx on public.products(subcatego
 create index if not exists products_featured_idx    on public.products(featured);
 create index if not exists products_search_idx on public.products
   using gin (to_tsvector('simple', coalesce(name,'') || ' ' || coalesce(short_description,'') || ' ' || coalesce(description,'')));
-create trigger products_updated   before update on public.products for each row execute function public.set_updated_at();
-create trigger products_published before insert or update on public.products for each row execute function public.set_published_at();
+create or replace trigger products_updated   before update on public.products for each row execute function public.set_updated_at();
+create or replace trigger products_published before insert or update on public.products for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 2. product_images
@@ -241,8 +241,8 @@ create table if not exists public.content (
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
-create trigger content_updated   before update on public.content for each row execute function public.set_updated_at();
-create trigger content_published before insert or update on public.content for each row execute function public.set_published_at();
+create or replace trigger content_updated   before update on public.content for each row execute function public.set_updated_at();
+create or replace trigger content_published before insert or update on public.content for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 10. experiences
@@ -267,8 +267,8 @@ create table if not exists public.experiences (
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now()
 );
-create trigger experiences_updated   before update on public.experiences for each row execute function public.set_updated_at();
-create trigger experiences_published before insert or update on public.experiences for each row execute function public.set_published_at();
+create or replace trigger experiences_updated   before update on public.experiences for each row execute function public.set_updated_at();
+create or replace trigger experiences_published before insert or update on public.experiences for each row execute function public.set_published_at();
 
 -- ============================================================================
 -- 6. homepage_sections  (+ 7. homepage_section_items)
@@ -289,8 +289,8 @@ create table if not exists public.homepage_sections (
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
-create trigger homepage_sections_updated   before update on public.homepage_sections for each row execute function public.set_updated_at();
-create trigger homepage_sections_published before insert or update on public.homepage_sections for each row execute function public.set_published_at();
+create or replace trigger homepage_sections_updated   before update on public.homepage_sections for each row execute function public.set_updated_at();
+create or replace trigger homepage_sections_published before insert or update on public.homepage_sections for each row execute function public.set_published_at();
 
 create table if not exists public.homepage_section_items (
   id            uuid primary key default gen_random_uuid(),
@@ -316,7 +316,7 @@ create table if not exists public.carts (
 );
 create index if not exists carts_customer_idx on public.carts(customer_id);
 create index if not exists carts_session_idx  on public.carts(session_id);
-create trigger carts_updated before update on public.carts for each row execute function public.set_updated_at();
+create or replace trigger carts_updated before update on public.carts for each row execute function public.set_updated_at();
 
 create table if not exists public.cart_items (
   id         uuid primary key default gen_random_uuid(),
@@ -366,8 +366,8 @@ begin
   end if;
   return new;
 end $$;
-create trigger orders_number  before insert on public.orders for each row execute function public.set_order_number();
-create trigger orders_updated before update on public.orders for each row execute function public.set_updated_at();
+create or replace trigger orders_number  before insert on public.orders for each row execute function public.set_order_number();
+create or replace trigger orders_updated before update on public.orders for each row execute function public.set_updated_at();
 
 create table if not exists public.order_items (
   id                   uuid primary key default gen_random_uuid(),
@@ -443,19 +443,30 @@ begin
   end loop;
 end $$;
 
--- Public read of published catalog rows
+-- Public read of published catalog rows (drop-first so this file is re-runnable)
+drop policy if exists pub_categories        on public.categories;
 create policy pub_categories        on public.categories        for select using (status = 'published');
+drop policy if exists pub_subcategories     on public.subcategories;
 create policy pub_subcategories     on public.subcategories     for select using (status = 'published');
+drop policy if exists pub_collections       on public.collections;
 create policy pub_collections       on public.collections       for select using (status = 'published');
+drop policy if exists pub_crystal_profiles  on public.crystal_profiles;
 create policy pub_crystal_profiles  on public.crystal_profiles  for select using (status = 'published');
+drop policy if exists pub_experiences       on public.experiences;
 create policy pub_experiences       on public.experiences       for select using (status = 'published');
+drop policy if exists pub_content           on public.content;
 create policy pub_content           on public.content           for select using (status = 'published');
+drop policy if exists pub_homepage_sections on public.homepage_sections;
 create policy pub_homepage_sections on public.homepage_sections for select using (status = 'published' and is_visible);
+drop policy if exists pub_products          on public.products;
 create policy pub_products          on public.products          for select using (status = 'published');
 
 -- Child tables that ride along with a visible parent (kept simple: public read)
+drop policy if exists pub_product_images    on public.product_images;
 create policy pub_product_images    on public.product_images        for select using (true);
+drop policy if exists pub_collection_prod   on public.collection_products;
 create policy pub_collection_prod   on public.collection_products   for select using (true);
+drop policy if exists pub_hp_items          on public.homepage_section_items;
 create policy pub_hp_items          on public.homepage_section_items for select using (true);
 
 -- (No anon policies on customers/carts/orders/payments/etc. → service_role only.)
