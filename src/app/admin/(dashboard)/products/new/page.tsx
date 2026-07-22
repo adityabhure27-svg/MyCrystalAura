@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { ProductForm } from "@/components/product-form";
-import { listCategories } from "@/lib/owner";
+import { listCategories, listSubcategories } from "@/lib/owner";
 
 export default async function NewProductPage(
   props: PageProps<"/admin/products/new">,
 ) {
   const sp = await props.searchParams;
   const error = typeof sp.error === "string" ? sp.error : null;
-  const categories = await listCategories();
+  const [categories, subcategories] = await Promise.all([
+    listCategories(),
+    listSubcategories(),
+  ]);
 
   return (
     <div>
@@ -26,7 +29,7 @@ export default async function NewProductPage(
       )}
 
       <div className="mt-6">
-        <ProductForm categories={categories} />
+        <ProductForm categories={categories} subcategories={subcategories} />
       </div>
     </div>
   );

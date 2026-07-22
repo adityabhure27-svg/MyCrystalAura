@@ -1,16 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type {
   Category,
   CustomerMetrics,
   Order,
   Product,
   ProductWithImages,
+  Subcategory,
 } from "@/lib/database.types";
 
 /**
- * Owner Portal reads. RLS restricts these to users with the owner role, so
- * they return everything (including unpublished products). Each degrades to a
- * safe empty/zero value on error so the portal renders before data exists.
+ * Admin Portal reads — server-side with the service-role client (full access).
+ * Return everything (incl. drafts). Degrade to empty/zero on error.
  */
 
 export type DashboardStats = {
@@ -23,7 +23,7 @@ export type DashboardStats = {
 async function count(
   table: "products" | "orders" | "customers",
 ): Promise<number> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { count: c, error } = await supabase
     .from(table)
     .select("*", { count: "exact", head: true });
@@ -32,27 +32,25 @@ async function count(
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const [products, orders, customers] = await Promise.all([
     count("products"),
     count("orders"),
     count("customers"),
   ]);
-
   const { data: paid } = await supabase
     .from("orders")
-    .select("total")
+    .select("total_amount")
     .eq("payment_status", "paid");
   const revenue = (paid ?? []).reduce(
-    (sum, o: { total: number }) => sum + Number(o.total ?? 0),
+    (sum, o: { total_amount: number }) => sum + Number(o.total_amount ?? 0),
     0,
   );
-
   return { products, orders, customers, revenue };
 }
 
 export async function listProducts(): Promise<Product[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -64,7 +62,7 @@ export async function listProducts(): Promise<Product[]> {
 export async function getProductById(
   id: string,
 ): Promise<ProductWithImages | null> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*, product_images(*)")
@@ -75,21 +73,31 @@ export async function getProductById(
 }
 
 export async function listCategories(): Promise<Category[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("categories")
     .select("*")
-    .order("position", { ascending: true });
+    .order("display_order", { ascending: true });
+  if (error) return [];
+  return data ?? [];
+}
+
+export async function listSubcategories(): Promise<Subcategory[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("subcategories")
+    .select("*")
+    .order("display_order", { ascending: true });
   if (error) return [];
   return data ?? [];
 }
 
 export async function listOrders(): Promise<Order[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("orders")
     .select("*")
-    .order("placed_at", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(100);
   if (error) return [];
   return data ?? [];
@@ -105,7 +113,7 @@ export type ProductPerformance = {
 };
 
 export async function listProductPerformance(): Promise<ProductPerformance[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("product_performance")
     .select("*")
@@ -116,7 +124,7 @@ export async function listProductPerformance(): Promise<ProductPerformance[]> {
 }
 
 export async function listCustomerMetrics(): Promise<CustomerMetrics[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("customer_metrics")
     .select("*")

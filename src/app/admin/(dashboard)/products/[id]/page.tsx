@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductForm } from "@/components/product-form";
-import { getProductById, listCategories } from "@/lib/owner";
+import { getProductById, listCategories, listSubcategories } from "@/lib/owner";
 import { deleteProduct } from "../actions";
 
 export default async function EditProductPage(
@@ -11,9 +11,10 @@ export default async function EditProductPage(
   const sp = await props.searchParams;
   const error = typeof sp.error === "string" ? sp.error : null;
 
-  const [product, categories] = await Promise.all([
+  const [product, categories, subcategories] = await Promise.all([
     getProductById(id),
     listCategories(),
+    listSubcategories(),
   ]);
   if (!product) notFound();
 
@@ -27,7 +28,7 @@ export default async function EditProductPage(
       </Link>
       <div className="mt-3 flex items-center justify-between">
         <h1 className="text-2xl text-navy">Edit product</h1>
-        {product.slug && product.is_published && (
+        {product.slug && product.status === "published" && (
           <Link
             href={`/product/${product.slug}`}
             className="font-body text-sm text-gold-deep hover:underline"
@@ -44,7 +45,11 @@ export default async function EditProductPage(
       )}
 
       <div className="mt-6">
-        <ProductForm product={product} categories={categories} />
+        <ProductForm
+          product={product}
+          categories={categories}
+          subcategories={subcategories}
+        />
       </div>
 
       <div className="mt-10 border-t border-gold/15 pt-6">

@@ -11,23 +11,30 @@ export async function generateMetadata(
   if (!product) return { title: "Product not found" };
   return {
     title: product.name,
-    description: product.description ?? `${product.name} at The Aura Crystals.`,
+    description:
+      product.short_description ??
+      product.description ??
+      `${product.name} at The Aura Crystals.`,
   };
 }
 
-export default async function ProductPage(
-  props: PageProps<"/product/[slug]">,
-) {
+export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   const images = product.product_images
     ?.slice()
-    .sort((a, b) => a.position - b.position);
+    .sort(
+      (a, b) =>
+        Number(b.is_primary) - Number(a.is_primary) ||
+        a.display_order - b.display_order,
+    );
   const hero = images?.[0];
-  const specs = (product.specifications ?? {}) as Record<string, unknown>;
-  const specEntries = Object.entries(specs);
+  const onSale =
+    product.sale_price != null && product.sale_price < product.price;
+  const current = onSale ? product.sale_price! : product.price;
+  const inStock = product.stock_quantity > 0;
 
   return (
     <section className="mx-auto max-w-6xl px-5 py-12">
@@ -45,8 +52,8 @@ export default async function ProductPage(
             {hero ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={hero.url}
-                alt={hero.alt ?? product.name}
+                src={hero.image_url}
+                alt={hero.alt_text ?? product.name}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -63,8 +70,8 @@ export default async function ProductPage(
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={img.id}
-                  src={img.url}
-                  alt={img.alt ?? product.name}
+                  src={img.image_url}
+                  alt={img.alt_text ?? product.name}
                   className="aspect-square w-full rounded-lg border border-gold/15 object-cover"
                 />
               ))}
@@ -75,20 +82,25 @@ export default async function ProductPage(
         {/* Details */}
         <div>
           <h1 className="text-3xl text-navy">{product.name}</h1>
-          <div className="mt-3 flex items-center gap-3">
+          {product.short_description && (
+            <p className="mt-2 font-body text-slate">
+              {product.short_description}
+            </p>
+          )}
+
+          <div className="mt-4 flex items-center gap-3">
             <span className="font-body text-xl font-semibold text-navy">
-              {formatPrice(product.price, product.currency)}
+              {formatPrice(current, product.currency)}
             </span>
-            {product.compare_at_price &&
-              product.compare_at_price > product.price && (
-                <span className="font-body text-sm text-slate line-through">
-                  {formatPrice(product.compare_at_price, product.currency)}
-                </span>
-              )}
+            {onSale && (
+              <span className="font-body text-sm text-slate line-through">
+                {formatPrice(product.price, product.currency)}
+              </span>
+            )}
           </div>
 
           <p className="mt-2 font-body text-sm">
-            {product.stock > 0 ? (
+            {inStock ? (
               <span className="text-emerald">In stock</span>
             ) : (
               <span className="text-slate">Currently unavailable</span>
@@ -103,29 +115,11 @@ export default async function ProductPage(
 
           <button
             type="button"
-            disabled={product.stock <= 0}
+            disabled={!inStock}
             className="mt-8 w-full rounded-brand bg-navy px-6 py-3 font-body text-sm font-semibold text-ivory transition-colors hover:bg-navy-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:px-10"
           >
             Add to Cart
           </button>
-
-          {specEntries.length > 0 && (
-            <div className="mt-10">
-              <h2 className="font-heading text-lg text-navy">Specifications</h2>
-              <dl className="mt-4 divide-y divide-gold/15 border-t border-gold/15">
-                {specEntries.map(([key, value]) => (
-                  <div key={key} className="flex justify-between gap-4 py-2.5">
-                    <dt className="font-body text-sm capitalize text-slate">
-                      {key.replace(/_/g, " ")}
-                    </dt>
-                    <dd className="font-body text-sm text-navy">
-                      {String(value)}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
         </div>
       </div>
     </section>

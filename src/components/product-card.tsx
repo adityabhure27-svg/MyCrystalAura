@@ -5,7 +5,11 @@ import type { ProductWithImages } from "@/lib/database.types";
 export function ProductCard({ product }: { product: ProductWithImages }) {
   const image = product.product_images
     ?.slice()
-    .sort((a, b) => a.position - b.position)[0];
+    .sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.display_order - b.display_order)[0];
+
+  const onSale =
+    product.sale_price != null && product.sale_price < product.price;
+  const current = onSale ? product.sale_price! : product.price;
 
   return (
     <Link
@@ -16,8 +20,8 @@ export function ProductCard({ product }: { product: ProductWithImages }) {
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={image.url}
-            alt={image.alt ?? product.name}
+            src={image.image_url}
+            alt={image.alt_text ?? product.name}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
@@ -33,14 +37,14 @@ export function ProductCard({ product }: { product: ProductWithImages }) {
         <h3 className="font-heading text-base text-navy">{product.name}</h3>
         <div className="mt-auto flex items-center gap-2 pt-3">
           <span className="font-body text-sm font-semibold text-navy">
-            {formatPrice(product.price, product.currency)}
+            {formatPrice(current, product.currency)}
           </span>
-          {product.compare_at_price && product.compare_at_price > product.price && (
+          {onSale && (
             <span className="font-body text-xs text-slate line-through">
-              {formatPrice(product.compare_at_price, product.currency)}
+              {formatPrice(product.price, product.currency)}
             </span>
           )}
-          {product.stock <= 0 && (
+          {product.stock_quantity <= 0 && (
             <span className="ml-auto rounded-full bg-slate/10 px-2 py-0.5 font-body text-[11px] text-slate">
               Sold out
             </span>

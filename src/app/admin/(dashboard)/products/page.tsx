@@ -47,7 +47,7 @@ export default async function OwnerProductsPage() {
                     >
                       {p.name}
                     </Link>
-                    {p.is_featured && (
+                    {p.featured && (
                       <span className="ml-2 rounded-full bg-gold/15 px-2 py-0.5 text-[11px] text-gold-deep">
                         Featured
                       </span>
@@ -56,14 +56,14 @@ export default async function OwnerProductsPage() {
                   <td className="px-4 py-3">
                     {formatPrice(p.price, p.currency)}
                   </td>
-                  <td className="px-4 py-3">{p.stock}</td>
+                  <td className="px-4 py-3">{p.stock_quantity}</td>
                   <td className="px-4 py-3">
                     <span
                       className={
-                        p.is_published ? "text-emerald" : "text-slate"
+                        p.status === "published" ? "text-emerald" : "text-slate"
                       }
                     >
-                      {p.is_published ? "Published" : "Draft"}
+                      {p.status === "published" ? "Published" : "Draft"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -72,13 +72,13 @@ export default async function OwnerProductsPage() {
                       <input
                         type="hidden"
                         name="publish"
-                        value={(!p.is_published).toString()}
+                        value={(p.status !== "published").toString()}
                       />
                       <button
                         type="submit"
                         className="font-body text-xs text-gold-deep hover:underline"
                       >
-                        {p.is_published ? "Unpublish" : "Publish"}
+                        {p.status === "published" ? "Unpublish" : "Publish"}
                       </button>
                     </form>
                   </td>

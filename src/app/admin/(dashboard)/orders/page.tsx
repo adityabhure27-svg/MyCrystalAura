@@ -36,12 +36,12 @@ export default async function OwnerOrdersPage() {
               {orders.map((o) => (
                 <tr key={o.id} className="border-t border-gold/15">
                   <td className="px-4 py-3 font-medium">{o.order_number}</td>
-                  <td className={`px-4 py-3 ${STATUS_TONE[o.status] ?? ""}`}>
-                    {o.status}
+                  <td className={`px-4 py-3 ${STATUS_TONE[o.order_status] ?? ""}`}>
+                    {o.order_status}
                   </td>
                   <td className="px-4 py-3">{o.payment_status}</td>
                   <td className="px-4 py-3">
-                    {formatPrice(o.total, o.currency)}
+                    {formatPrice(o.total_amount, o.currency)}
                   </td>
                   <td className="px-4 py-3 text-slate">
                     {o.delivery_tracking_id ?? "—"}

@@ -41,7 +41,7 @@ export default async function OwnerCustomersPage() {
               {customers.map((c) => (
                 <tr key={c.customer_id} className="border-t border-gold/15">
                   <td className="px-4 py-3">
-                    <span className="font-medium">{c.full_name ?? "—"}</span>
+                    <span className="font-medium">{c.name ?? "—"}</span>
                     <span className="block text-xs text-slate">{c.email}</span>
                   </td>
                   <td className="px-4 py-3">
