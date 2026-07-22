@@ -46,7 +46,7 @@ export function SiteFooter() {
 
       <div className="border-t border-ivory/10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-5 py-6 font-body text-xs text-ivory/50 sm:flex-row">
-          <p>© {new Date().getFullYear()} CrystalAura. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} The Aura Crystals. All rights reserved.</p>
           <p>Made with intention in India.</p>
         </div>
       </div>

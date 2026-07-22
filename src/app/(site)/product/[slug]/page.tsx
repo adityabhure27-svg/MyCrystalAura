@@ -11,7 +11,7 @@ export async function generateMetadata(
   if (!product) return { title: "Product not found" };
   return {
     title: product.name,
-    description: product.description ?? `${product.name} at CrystalAura.`,
+    description: product.description ?? `${product.name} at The Aura Crystals.`,
   };
 }
 

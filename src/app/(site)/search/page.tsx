@@ -5,7 +5,7 @@ import { formatPrice, searchProducts } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Search",
-  description: "Search authentic crystals and wellness products at CrystalAura.",
+  description: "Search authentic crystals and wellness products at The Aura Crystals.",
 };
 
 export default async function SearchPage(props: PageProps<"/search">) {

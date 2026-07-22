@@ -1,5 +1,5 @@
 /**
- * CrystalAura content model — mirrors the Brand Anchor Document (v1.0).
+ * The Aura Crystals content model — mirrors the Brand Anchor Document (v1.0).
  * This is the single source of truth for navigation and static pages until
  * the catalog is backed by Supabase.
  */

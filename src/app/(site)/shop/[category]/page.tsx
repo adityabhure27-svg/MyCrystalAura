@@ -17,7 +17,7 @@ export async function generateMetadata(
     (c) => CATEGORY_SLUGS[c.name] === category,
   );
   const title = staticMatch?.name ?? "Category";
-  return { title, description: `Shop ${title} at CrystalAura.` };
+  return { title, description: `Shop ${title} at The Aura Crystals.` };
 }
 
 export default async function CategoryPage(

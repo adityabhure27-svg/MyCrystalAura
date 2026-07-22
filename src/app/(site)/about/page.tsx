@@ -5,7 +5,7 @@ import { BRAND_PROMISE } from "@/lib/content";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "CrystalAura is India's premium holistic wellness marketplace — authentic crystals, trusted knowledge, and conscious living.",
+    "The Aura Crystals is India's premium holistic wellness marketplace — authentic crystals, trusted knowledge, and conscious living.",
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title="Energy. Balance. Transformation."
-        description="CrystalAura is India's premium holistic wellness marketplace — more than a store, an ecosystem to discover, learn, experience, and transform."
+        description="The Aura Crystals is India's premium holistic wellness marketplace — more than a store, an ecosystem to discover, learn, experience, and transform."
       />
 
       <section className="mx-auto max-w-3xl px-5 py-16">

@@ -14,7 +14,7 @@ export default function CommunityPage() {
       <PageHero
         eyebrow="Community"
         title="Grow together"
-        description="CrystalAura Community is where members connect, share, and support one another on a shared wellness journey."
+        description="The Aura Crystals Community is where members connect, share, and support one another on a shared wellness journey."
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16">

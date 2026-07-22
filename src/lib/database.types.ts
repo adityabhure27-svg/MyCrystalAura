@@ -1,5 +1,5 @@
 /**
- * MyCrystalAura database types.
+ * The Aura Crystals database types.
  *
  * Hand-authored to match supabase/migrations. Once the schema is live, these
  * can be regenerated with `supabase gen types typescript`.

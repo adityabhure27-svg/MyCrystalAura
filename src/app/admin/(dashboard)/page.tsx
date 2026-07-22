@@ -16,7 +16,7 @@ export default async function OwnerDashboard() {
     <div>
       <h1 className="text-2xl text-navy">Dashboard</h1>
       <p className="mt-1 font-body text-sm text-slate">
-        Overview of your CrystalAura operation.
+        Overview of your The Aura Crystals operation.
       </p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">

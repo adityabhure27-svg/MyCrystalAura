@@ -5,7 +5,7 @@ import { LEARN_AREAS, ENCYCLOPEDIA_FIELDS } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Learn",
   description:
-    "The educational foundation of CrystalAura — a crystal encyclopedia and guided learning across chakra healing, sound healing, meditation, and mindful living.",
+    "The educational foundation of The Aura Crystals — a crystal encyclopedia and guided learning across chakra healing, sound healing, meditation, and mindful living.",
 };
 
 export default function LearnPage() {
@@ -14,7 +14,7 @@ export default function LearnPage() {
       <PageHero
         eyebrow="Learn"
         title="Trusted knowledge, education-first"
-        description="CrystalAura Learn helps you understand crystals, wellness, meditation, and spiritual practices — so you feel confident before you purchase."
+        description="The Aura Crystals Learn helps you understand crystals, wellness, meditation, and spiritual practices — so you feel confident before you purchase."
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16">

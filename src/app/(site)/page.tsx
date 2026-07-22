@@ -25,7 +25,7 @@ export default function Home() {
             Discover, heal, and elevate your aura
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-pretty font-body text-lg leading-relaxed text-slate">
-            CrystalAura is India&apos;s premium holistic wellness marketplace —
+            The Aura Crystals is India&apos;s premium holistic wellness marketplace —
             authentic crystals, trusted knowledge, and meaningful experiences for
             conscious living.
           </p>
@@ -132,7 +132,7 @@ export default function Home() {
               Educated before you purchase
             </h2>
             <p className="mt-4 font-body leading-relaxed text-ivory/70">
-              CrystalAura Learn is the educational foundation of the platform — a
+              The Aura Crystals Learn is the educational foundation of the platform — a
               crystal encyclopedia and guided learning across chakra healing,
               sound healing, meditation, and mindful living.
             </p>

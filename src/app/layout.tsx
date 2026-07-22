@@ -19,8 +19,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "CrystalAura — Authentic Crystals & Conscious Living",
-    template: "%s · CrystalAura",
+    default: "The Aura Crystals — Authentic Crystals & Conscious Living",
+    template: "%s · The Aura Crystals",
   },
   description:
     "India's premium holistic wellness marketplace for authentic crystals, sound healing, meditation, and conscious living. Shop, Learn, Experience, and connect with the Community.",

@@ -1,34 +1,13 @@
 import { redirect } from "next/navigation";
-import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 /**
- * Auth helpers backed by Clerk. Two roles only: customer (default) and admin.
- * Admin is granted via the Clerk user's `publicMetadata.role = "admin"`.
+ * Gate for the Owner/Admin portal. Admin uses its own credential gate
+ * (see src/lib/admin-auth.ts), separate from Clerk (which handles customers).
+ * Redirects to the admin sign-in when there is no valid admin session.
  */
-
-export async function getUserId(): Promise<string | null> {
-  const { userId } = await auth();
-  return userId;
-}
-
-export async function getRole(): Promise<"admin" | "customer" | null> {
-  const { userId } = await auth();
-  if (!userId) return null;
-  const user = await currentUser();
-  return user?.publicMetadata?.role === "admin" ? "admin" : "customer";
-}
-
-/**
- * Gate for the Owner/Admin portal. Redirects to sign-in if signed out, or home
- * if the signed-in user is not an admin. Returns the admin user id on success.
- */
-export async function requireOwner(): Promise<string> {
-  const { userId } = await auth();
-  if (!userId) redirect("/admin/sign-in");
-
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  if (user.publicMetadata?.role !== "admin") redirect("/?denied=admin");
-
-  return userId;
+export async function requireOwner(): Promise<void> {
+  if (!(await isAdminAuthenticated())) {
+    redirect("/admin/sign-in");
+  }
 }

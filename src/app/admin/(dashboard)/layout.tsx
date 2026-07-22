@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { requireOwner } from "@/lib/auth";
+import { adminSignOut } from "@/app/admin/sign-in/actions";
 import { Logo } from "@/components/logo";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
@@ -38,16 +43,14 @@ export default async function AdminLayout({
             </Link>
           ))}
         </nav>
-        <div className="border-t border-ivory/10 p-3">
-          <SignOutButton>
-            <button
-              type="button"
-              className="w-full rounded-lg px-3 py-2 text-left font-body text-sm text-ivory/60 transition-colors hover:text-ivory"
-            >
-              Sign out
-            </button>
-          </SignOutButton>
-        </div>
+        <form action={adminSignOut} className="border-t border-ivory/10 p-3">
+          <button
+            type="submit"
+            className="w-full rounded-lg px-3 py-2 text-left font-body text-sm text-ivory/60 transition-colors hover:text-ivory"
+          >
+            Sign out
+          </button>
+        </form>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -56,9 +59,11 @@ export default async function AdminLayout({
             <Logo />
           </div>
           <span className="hidden font-body text-sm text-slate md:block">
-            MyCrystalAura — Control Center
+            The Aura Crystals — Control Center
           </span>
-          <UserButton />
+          <span className="font-body text-xs text-slate">
+            admin@mycrystalaura.com
+          </span>
         </header>
         <div className="flex-1 p-6 md:p-8">{children}</div>
       </div>
