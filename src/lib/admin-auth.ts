@@ -44,6 +44,26 @@ export function verifyCredentials(email: string, password: string): boolean {
   return emailOk && passOk;
 }
 
+export const SESSION_COOKIE = COOKIE;
+
+/** Build the signed session cookie (name/value/options) for a Route Handler. */
+export function buildSessionCookie() {
+  const exp = Date.now() + MAX_AGE_SECONDS * 1000;
+  const payload = `admin.${exp}`;
+  const token = `${payload}.${sign(payload)}`;
+  return {
+    name: COOKIE,
+    value: token,
+    options: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax" as const,
+      path: "/",
+      maxAge: MAX_AGE_SECONDS,
+    },
+  };
+}
+
 export async function createAdminSession(): Promise<void> {
   const exp = Date.now() + MAX_AGE_SECONDS * 1000;
   const payload = `admin.${exp}`;

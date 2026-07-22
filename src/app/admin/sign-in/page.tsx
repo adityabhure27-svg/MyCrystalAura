@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
-import { adminSignIn } from "./actions";
 
 export const metadata: Metadata = {
   title: "Admin Sign In",
@@ -24,7 +23,8 @@ export default async function AdminSignInPage(
       </div>
 
       <form
-        action={adminSignIn}
+        action="/api/admin/login"
+        method="post"
         className="w-full max-w-sm rounded-brand bg-cream p-8 shadow-2xl"
       >
         <h1 className="text-center font-heading text-xl text-navy">

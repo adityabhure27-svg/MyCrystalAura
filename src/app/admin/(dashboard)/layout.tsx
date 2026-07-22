@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireOwner } from "@/lib/auth";
-import { adminSignOut } from "@/app/admin/sign-in/actions";
 import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
@@ -43,7 +42,11 @@ export default async function AdminLayout({
             </Link>
           ))}
         </nav>
-        <form action={adminSignOut} className="border-t border-ivory/10 p-3">
+        <form
+          action="/api/admin/logout"
+          method="post"
+          className="border-t border-ivory/10 p-3"
+        >
           <button
             type="submit"
             className="w-full rounded-lg px-3 py-2 text-left font-body text-sm text-ivory/60 transition-colors hover:text-ivory"
