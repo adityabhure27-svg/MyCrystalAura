@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/page-hero";
-import { SHOP_CATEGORIES } from "@/lib/content";
+import { SHOP_CATEGORIES, CATEGORY_SLUGS } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -20,11 +21,14 @@ export default function ShopPage() {
       <section className="mx-auto max-w-6xl px-5 py-16">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SHOP_CATEGORIES.map((category) => (
-            <div
+            <Link
               key={category.name}
-              className="rounded-brand border border-gold/20 bg-white/60 p-6 transition-all hover:-translate-y-1 hover:border-gold hover:shadow-lg hover:shadow-gold/10"
+              href={`/shop/${CATEGORY_SLUGS[category.name]}`}
+              className="group block rounded-brand border border-gold/20 bg-white/60 p-6 transition-all hover:-translate-y-1 hover:border-gold hover:shadow-lg hover:shadow-gold/10"
             >
-              <h2 className="font-heading text-lg text-navy">{category.name}</h2>
+              <h2 className="font-heading text-lg text-navy group-hover:text-gold-deep">
+                {category.name}
+              </h2>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {category.items.map((item) => (
                   <li
@@ -35,13 +39,12 @@ export default function ShopPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Link>
           ))}
         </div>
 
         <p className="mt-12 text-center font-body text-sm text-slate">
-          Catalog and checkout are coming soon — this is the brand-anchored
-          category structure.
+          Select a category to browse its products.
         </p>
       </section>
     </>

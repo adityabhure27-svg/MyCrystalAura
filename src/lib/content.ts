@@ -182,6 +182,22 @@ export const SHOP_CATEGORIES: Category[] = [
   },
 ];
 
+/** Category name -> slug (matches supabase/migrations/0003_seed_categories.sql). */
+export const CATEGORY_SLUGS: Record<string, string> = {
+  "Crystal Jewellery": "crystal-jewellery",
+  "Raw Crystals": "raw-crystals",
+  "Polished Crystals": "polished-crystals",
+  "Crystal Home & Office": "crystal-home-office",
+  "Healing Crystal Kits": "healing-crystal-kits",
+  "Sound Healing": "sound-healing",
+  Meditation: "meditation",
+  "Spiritual Products": "spiritual-products",
+  Wellness: "wellness",
+  Astrology: "astrology",
+  Gifts: "gifts",
+  "DIY Jewellery Supplies": "diy-jewellery-supplies",
+};
+
 export const LEARN_AREAS: string[] = [
   "Crystal Basics",
   "Crystal Identification",

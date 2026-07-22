@@ -37,6 +37,19 @@ export async function getFeaturedProducts(
   return (data as ProductWithImages[] | null) ?? [];
 }
 
+export async function getCategoryBySlug(
+  slug: string,
+): Promise<Category | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+  if (error) return null;
+  return (data as Category | null) ?? null;
+}
+
 export async function getProductsByCategory(
   categorySlug: string,
 ): Promise<ProductWithImages[]> {
