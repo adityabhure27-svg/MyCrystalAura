@@ -124,10 +124,9 @@ export async function placeOrder(formData: FormData) {
       shipping_fee,
       tax,
       total_amount,
-      payment_status: "paid", // mock payment
-      order_status: "confirmed",
+      payment_status: "pending",
+      order_status: "pending",
       shipping_address: address,
-      transaction_id: "MOCK-" + crypto.randomUUID().slice(0, 12),
     })
     .select("id, order_number")
     .single();
@@ -137,20 +136,74 @@ export async function placeOrder(formData: FormData) {
     .from("order_items")
     .insert(lines.map((l) => ({ ...l, order_id: order.id })));
 
-  // Decrement stock + record inventory movement.
-  for (const l of lines) {
-    const p = byId.get(l.product_id)!;
-    await supabase
+  // Stock is decremented on payment confirmation, not on order creation.
+  redirect(`/checkout/pay/${order.order_number}`);
+}
+
+/**
+ * UPI collect — no gateway yet: the customer pays the merchant VPA and confirms
+ * with their reference. We trust the confirmation and mark the order paid; the
+ * owner verifies against the bank statement.
+ */
+export async function confirmPayment(formData: FormData) {
+  const { userId } = await auth();
+  if (!userId) redirect("/sign-in");
+
+  const orderNumber = String(formData.get("order_number") ?? "");
+  const reference = String(formData.get("reference") ?? "").trim();
+  if (!orderNumber) redirect("/bag");
+
+  const supabase = createAdminClient();
+  const { data: order } = await supabase
+    .from("orders")
+    .select(
+      "id, payment_status, customers!inner(clerk_user_id), order_items(product_id, quantity)",
+    )
+    .eq("order_number", orderNumber)
+    .maybeSingle();
+
+  const ownerClerk = (
+    order as { customers?: { clerk_user_id?: string } } | null
+  )?.customers?.clerk_user_id;
+  if (!order || ownerClerk !== userId) redirect("/bag");
+  if (order.payment_status === "paid") redirect(`/order/${orderNumber}`);
+
+  await supabase
+    .from("orders")
+    .update({
+      payment_status: "paid",
+      order_status: "confirmed",
+      transaction_id: reference || "UPI-" + crypto.randomUUID().slice(0, 10),
+    })
+    .eq("id", order.id);
+
+  // Decrement stock now that payment is confirmed.
+  const items = (order.order_items ?? []) as Array<{
+    product_id: string | null;
+    quantity: number;
+  }>;
+  for (const it of items) {
+    if (!it.product_id) continue;
+    const { data: p } = await supabase
       .from("products")
-      .update({ stock_quantity: Math.max(0, p.stock_quantity - l.quantity) })
-      .eq("id", l.product_id);
-    await supabase.from("inventory_transactions").insert({
-      product_id: l.product_id,
-      transaction_type: "purchase",
-      quantity: -l.quantity,
-      reference_id: order.id,
-    });
+      .select("stock_quantity")
+      .eq("id", it.product_id)
+      .maybeSingle();
+    if (p) {
+      await supabase
+        .from("products")
+        .update({
+          stock_quantity: Math.max(0, p.stock_quantity - it.quantity),
+        })
+        .eq("id", it.product_id);
+      await supabase.from("inventory_transactions").insert({
+        product_id: it.product_id,
+        transaction_type: "purchase",
+        quantity: -it.quantity,
+        reference_id: order.id,
+      });
+    }
   }
 
-  redirect(`/order/${order.order_number}`);
+  redirect(`/order/${orderNumber}`);
 }

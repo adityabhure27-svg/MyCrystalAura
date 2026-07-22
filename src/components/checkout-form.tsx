@@ -119,10 +119,10 @@ export function CheckoutForm() {
             type="submit"
             className="mt-6 w-full rounded-brand bg-gold px-6 py-3 font-body text-sm font-semibold text-navy transition-transform hover:-translate-y-0.5"
           >
-            Place order &amp; pay {inr(total)}
+            Continue to payment · {inr(total)}
           </button>
           <p className="mt-2 text-center font-body text-[11px] text-slate">
-            Payment is simulated for this demo.
+            Pay securely via UPI on the next step.
           </p>
         </div>
       </form>
